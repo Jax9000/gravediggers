@@ -1,0 +1,18 @@
+/*
+ * Administration.cpp
+ *
+ *  Created on: Jul 2, 2016
+ *      Author: jjax
+ */
+
+#include "Administration.h"
+
+Administration::Administration() {
+	// TODO Auto-generated constructor stub
+
+}
+
+Administration::~Administration() {
+	// TODO Auto-generated destructor stub
+}
+

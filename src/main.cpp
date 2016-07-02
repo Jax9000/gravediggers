@@ -1,32 +1,41 @@
 #include <iostream>
 #include <math.h> 
 #include <mpi.h>
+#include <unistd.h>
+#include <string>
+#include <cstring>
+#include "Models/MessageModel.h"
 using namespace std;
- 
+
 int main(int argc, char *argv[]) {
-	int n, rank, size, i;
-	double PI25DT = 3.141592653589793238462643;
-	double mypi, pi, h, sum, x;
-
 	MPI::Init(argc, argv);
-	size = MPI::COMM_WORLD.Get_size();
-	rank = MPI::COMM_WORLD.Get_rank();
 
-	n=1000; // number of intervals
+	int size, rank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
+	MPI_Status status;
+	MessageModel message;
 
-	MPI::COMM_WORLD.Bcast(&n, 1, MPI::INT, 0);
-	h = 1.0 / (double) n;
-	sum = 0.0;
-	for (i = rank + 1; i <= n; i += size) {
-		x = h * ((double) i - 0.5);
-		sum += (4.0 / (1.0 + x * x));
+	if (rank == 0) {
+		if (fork() == 0) {
+			MPI_Recv(&message, sizeof(MessageModel), MPI_BYTE, MPI_ANY_SOURCE,
+					MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+			cout << message.content << endl;
+		} else {
+
+		}
+		sleep(2);
 	}
-	mypi = h * sum;
 
-	MPI::COMM_WORLD.Reduce(&mypi, &pi, 1, MPI::DOUBLE, MPI::SUM, 0);
-	if (rank == 0)
-		cout << "pi is approximately " << pi << ", Error is "
-				<< fabs(pi - PI25DT) << endl;
+	if (rank == 1) {
+		if (fork() == 0) {
+			cout << "XD" << endl;
+		} else {
+			strcpy(message.content, "dupa");
+			MPI_Send(&message,sizeof(MessageModel), MPI_BYTE, 0, 1, MPI_COMM_WORLD);
+		}
+		sleep(2);
+	}
 
 	MPI::Finalize();
 	return 0;
