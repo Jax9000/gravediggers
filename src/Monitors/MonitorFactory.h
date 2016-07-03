@@ -9,7 +9,11 @@
 #define MONITORFACTORY_H_
 
 #include "Monitor.h"
+#include "AdministrationMonitor.h"
+#include "GravediggerMonitor.h"
+#include "OfficialMonitor.h"
 #include "../Enums/ActorType.h"
+
 
 class MonitorFactory {
 public:

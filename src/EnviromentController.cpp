@@ -8,7 +8,13 @@
 #include "EnviromentController.h"
 
 EnviromentController::EnviromentController(int argc, char* argv[]) {
-	MPI::Init(argc, argv);
+	int provided;
+	MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided);
+	if (provided < MPI_THREAD_MULTIPLE)
+	{
+	    printf("ERROR: The MPI library does not have full thread support\n");
+	    MPI_Abort(MPI_COMM_WORLD, 1);
+	}
 }
 
 void EnviromentController::Start() {
