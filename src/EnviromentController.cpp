@@ -12,14 +12,8 @@ EnviromentController::EnviromentController(int argc, char* argv[]) {
 }
 
 void EnviromentController::Start() {
-	int size, id;
+	int id;
 	MPI_Comm_rank(MPI_COMM_WORLD, &id);
-	MPI_Comm_size(MPI_COMM_WORLD, &size);
-
-	if(id < 0){
-		// TODO throw sth
-		// may this happen?
-	}
 
 	switch(id){
 	case 0:
@@ -32,4 +26,15 @@ void EnviromentController::Start() {
 		RunGravedigger();
 		break;
 	}
+}
+
+void EnviromentController::RunAdministration() {
+	Administration instance;
+}
+
+void EnviromentController::RunGravedigger() {
+	Gravedigger instance;
+}
+
+void EnviromentController::RunOfficial() {
 }

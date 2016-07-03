@@ -8,8 +8,11 @@
 #ifndef ENVIROMENTCONTROLLER_H_
 #define ENVIROMENTCONTROLLER_H_
 
-#include "Models/ActorsModel.h"
 #include <mpi.h>
+#include "Actors/Administration.h"
+#include "Actors/Gravedigger.h"
+#include "Actors/Official.h"
+#include "Enums/ActorType.h"
 
 class EnviromentController {
 public:
