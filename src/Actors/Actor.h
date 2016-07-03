@@ -25,6 +25,9 @@ protected:
 	Monitor monitor;
 	ActorType actor_type;
 	int id;
+
+private:
+	static void *thread_provider(void* object);
 };
 
 #endif /* ACTOR_H_ */

@@ -9,6 +9,8 @@
 #define MONITOR_H_
 
 class Monitor {
+public:
+	void* Run();
 };
 
 #endif /* MONITOR_H_ */

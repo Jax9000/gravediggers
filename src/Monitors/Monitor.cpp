@@ -7,3 +7,5 @@
 
 #include "Monitor.h"
 
+void* Monitor::Run() {
+}

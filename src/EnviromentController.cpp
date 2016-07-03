@@ -43,4 +43,5 @@ void EnviromentController::RunGravedigger() {
 }
 
 void EnviromentController::RunOfficial() {
+	Official instance;
 }
