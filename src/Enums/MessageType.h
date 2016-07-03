@@ -9,7 +9,8 @@
 #define MESSAGETYPE_H_
 
 enum MessageType {
-	EXAMPLE_REQUEST
+	EXAMPLE_TYPE
+	//TODO finish types
 };
 
 #endif /* MESSAGETYPE_H_ */

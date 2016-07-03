@@ -8,9 +8,18 @@
 #ifndef ENVIROMENTCONTROLLER_H_
 #define ENVIROMENTCONTROLLER_H_
 
+#include "Models/ActorsModel.h"
+#include <mpi.h>
+
 class EnviromentController {
 public:
+	EnviromentController(int argc, char *argv[]);
+	void Start();
 
+private:
+	void RunAdministration();
+	void RunGravedigger();
+	void RunOfficial();
 };
 
 #endif /* ENVIROMENTCONTROLLER_H_ */
