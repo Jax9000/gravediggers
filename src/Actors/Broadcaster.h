@@ -18,6 +18,7 @@ public:
 
 private:
 	bool isworking;
+	bool wants_to_send;
 };
 
 #endif /* BROADCASTER_H_ */

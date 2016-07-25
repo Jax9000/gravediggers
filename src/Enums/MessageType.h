@@ -9,7 +9,8 @@
 #define MESSAGETYPE_H_
 
 enum MessageType {
-	EXAMPLE_TYPE
+	EXAMPLE_TYPE,
+	SPAM,
 	//TODO finish types
 };
 
