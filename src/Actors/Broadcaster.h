@@ -13,6 +13,11 @@
 class Broadcaster : public Actor {
 public:
 	Broadcaster(int id);
+	void Run();
+	void Stop();
+
+private:
+	bool isworking;
 };
 
 #endif /* BROADCASTER_H_ */
