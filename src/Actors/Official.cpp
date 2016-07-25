@@ -7,7 +7,7 @@
 
 #include "Official.h"
 
-Official::Official() {
+Official::Official(int id) : Actor(id) {
 	// TODO Auto-generated constructor stub
 
 }

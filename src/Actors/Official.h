@@ -13,7 +13,7 @@
 
 class Official : public Actor {
 public:
-	Official();
+	Official(int id);
 	virtual ~Official();
 };
 

@@ -7,7 +7,7 @@
 
 #include "Gravedigger.h"
 
-Gravedigger::Gravedigger() {
+Gravedigger::Gravedigger(int id) : Actor(id) {
 	// TODO Auto-generated constructor stub
 
 }

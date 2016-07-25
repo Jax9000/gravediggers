@@ -7,11 +7,13 @@
 
 #include "Actor.h"
 
-
 Actor::Actor() {
-	MPI_Comm_rank(MPI_COMM_WORLD, &(this->id));
-	actor_type = ActorUtils::ConvertId2Type(this->id);
-	monitor = *(MonitorFactory::Build(actor_type));
+}
+
+Actor::Actor(int id) {
+	this->id = id;
+	this->actor_type = ActorUtils::ConvertId2Type(this->id);
+	this->monitor = *(MonitorFactory::Build(actor_type));
 
     pthread_t thread;
     pthread_create(&thread, NULL, &Actor::thread_provider, &monitor);

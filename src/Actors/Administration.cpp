@@ -7,7 +7,7 @@
 
 #include "Administration.h"
 
-Administration::Administration() {
+Administration::Administration(int id) : Actor::Actor(id) {
 	// TODO Auto-generated constructor stub
 
 }

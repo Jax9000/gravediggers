@@ -18,6 +18,7 @@
 class Actor {
 public:
 	Actor();
+	Actor(int id);
 	virtual ActorType GetType();
 	virtual ~Actor();
 

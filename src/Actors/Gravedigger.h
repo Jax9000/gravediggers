@@ -13,7 +13,7 @@
 
 class Gravedigger : public Actor{
 public:
-	Gravedigger();
+	Gravedigger(int id);
 	virtual ~Gravedigger();
 };
 

@@ -12,7 +12,7 @@
 
 class Administration : public Actor{
 public:
-	Administration();
+	Administration(int id);
 	virtual ~Administration();
 };
 
