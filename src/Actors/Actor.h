@@ -12,8 +12,6 @@
 #include <pthread.h>
 
 #include "../Utils/ActorUtils.h"
-#include "../Monitors/Monitor.h"
-#include "../Monitors/MonitorFactory.h"
 
 class Actor {
 public:
@@ -23,9 +21,10 @@ public:
 	virtual ~Actor();
 
 protected:
-	Monitor monitor;
 	ActorType actor_type;
 	int id;
+	bool isworking;
+	bool wants_to_send;
 
 private:
 	static void *thread_provider(void* object);

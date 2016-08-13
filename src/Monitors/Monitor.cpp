@@ -8,4 +8,9 @@
 #include "Monitor.h"
 
 void* Monitor::Run() {
+	return 0;
+}
+
+void Monitor::SetActor(Actor* actor) {
+	this->actor = actor;
 }

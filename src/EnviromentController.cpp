@@ -40,16 +40,29 @@ void EnviromentController::Start() {
 
 void EnviromentController::RunAdministration(int id) {
 	Administration instance(id);
+	RunMonitor(&instance);
 }
 
 void EnviromentController::RunGravedigger(int id) {
 	Gravedigger instance(id);
+
 }
 
 void EnviromentController::RunBroadcaster(int id) {
 	Broadcaster instance(id);
+	instance.Run();
 }
 
 void EnviromentController::RunOfficial(int id) {
 	Official instance(id);
+}
+
+void EnviromentController::RunMonitor(Actor* actor) {
+	Monitor* monitor = MonitorFactory::Build(actor->GetType());
+	pthread_t thread;
+	pthread_create(&thread, NULL, &EnviromentController::thread_provider, monitor);
+}
+
+void* EnviromentController::thread_provider(void* object) {
+	return ((Monitor*)object)->Run();
 }

@@ -14,6 +14,7 @@
 #include "OfficialMonitor.h"
 #include "../Enums/ActorType.h"
 
+class Monitor;
 
 class MonitorFactory {
 public:

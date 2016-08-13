@@ -11,6 +11,7 @@
 #include "Monitor.h"
 
 class GravediggerMonitor : public Monitor{
+
 };
 
 #endif /* GRAVEDIGGERMONITOR_H_ */

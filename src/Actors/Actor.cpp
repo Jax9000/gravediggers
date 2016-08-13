@@ -8,25 +8,22 @@
 #include "Actor.h"
 
 Actor::Actor() {
+	actor_type = UNDEFINED;
+	id = -1;
+	wants_to_send = false;
+	isworking = false;
 }
 
 Actor::Actor(int id) {
 	this->id = id;
 	this->actor_type = ActorUtils::ConvertId2Type(this->id);
-	this->monitor = *(MonitorFactory::Build(actor_type));
-
-    pthread_t thread;
-    pthread_create(&thread, NULL, &Actor::thread_provider, &monitor);
+	wants_to_send = false;
+	isworking = false;
 }
-
 
 ActorType Actor::GetType() {
 	return actor_type;
 }
 
 Actor::~Actor() {
-}
-
-void* Actor::thread_provider(void *object) {
-	return ((Monitor*)object)->Run();
 }

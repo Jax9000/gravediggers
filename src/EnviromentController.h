@@ -14,6 +14,8 @@
 #include "Actors/Official.h"
 #include "Actors/Broadcaster.h"
 #include "Enums/ActorType.h"
+#include "Monitors/Monitor.h"
+#include "Monitors/MonitorFactory.h"
 
 #define BROADCASTER 0
 #define ADMINISTRATION 1
@@ -30,6 +32,8 @@ private:
 	void RunAdministration(int id);
 	void RunGravedigger(int id);
 	void RunOfficial(int id);
+	void RunMonitor(Actor* actor);
+	static void* thread_provider(void *object);
 };
 
 #endif /* ENVIROMENTCONTROLLER_H_ */
