@@ -27,3 +27,8 @@ ActorType Actor::GetType() {
 
 Actor::~Actor() {
 }
+
+bool Actor::DoWantToSend() {
+	//TODO implement this
+	return false;
+}

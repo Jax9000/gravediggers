@@ -19,6 +19,7 @@ public:
 	Actor(int id);
 	virtual ActorType GetType();
 	virtual ~Actor();
+	bool DoWantToSend();
 
 protected:
 	ActorType actor_type;
