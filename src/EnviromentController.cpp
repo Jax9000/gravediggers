@@ -7,6 +7,7 @@
 
 #include "EnviromentController.h"
 #include <unistd.h>
+#include <iostream>
 
 EnviromentController::EnviromentController(int argc, char* argv[]) {
 	int provided;
