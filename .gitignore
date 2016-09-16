@@ -30,3 +30,9 @@
 /Debug/
 /.cproject
 /.project
+
+# Qt
+*.pro
+*.pro.user
+*.autosave
+
