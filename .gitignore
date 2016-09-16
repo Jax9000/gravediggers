@@ -33,4 +33,6 @@
 
 # Qt
 *.pro
-*pro.user
+*.pro.user
+*.autosave
+
