@@ -12,7 +12,7 @@
 
 class ActorUtils {
 public:
-	static ActorType ConvertId2Type(int id);
+	static ActorType ConvertProcessIdToType(int id);
 };
 
 #endif /* ACTORUTILS_H_ */

@@ -11,8 +11,6 @@ Monitor* MonitorFactory::Build(ActorType type) {
 	switch(type){
 	case ADMINISTRATION:
 		return new AdministrationMonitor();
-	case OFFICIAL:
-		return new OfficialMonitor();
 	default:
 		return new GravediggerMonitor();
 	}

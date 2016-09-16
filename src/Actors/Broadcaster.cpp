@@ -10,7 +10,7 @@
 
 Broadcaster::Broadcaster(int id) : Actor() {
 	this->id = id;
-	this->actor_type = ActorUtils::ConvertId2Type(this->id);
+	this->actor_type = ActorUtils::ConvertProcessIdToType(this->id);
 	this->isworking = false;
 	this->wants_to_send = false;
 }

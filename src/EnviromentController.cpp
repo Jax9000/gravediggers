@@ -30,9 +30,6 @@ void EnviromentController::Start() {
 	case ADMINISTRATION:
 		RunAdministration(id);
 		break;
-	case OFFICIAL:
-		RunOfficial(id);
-		break;
 	default:
 		RunGravedigger(id);
 		break;
@@ -54,12 +51,9 @@ void EnviromentController::RunBroadcaster(int id) {
 	instance.Run();
 }
 
-void EnviromentController::RunOfficial(int id) {
-	Official instance(id);
-}
-
 void EnviromentController::RunMonitor(Actor* actor) {
 	Monitor* monitor = MonitorFactory::Build(actor->GetType());
+	monitor->SetMutex(actor->GetMutex());
 	pthread_t thread;
 	pthread_create(&thread, NULL, &EnviromentController::thread_provider, monitor);
 }

@@ -11,7 +11,6 @@
 #include "Monitor.h"
 #include "AdministrationMonitor.h"
 #include "GravediggerMonitor.h"
-#include "OfficialMonitor.h"
 #include "../Enums/ActorType.h"
 
 class Monitor;

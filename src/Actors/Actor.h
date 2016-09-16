@@ -22,11 +22,14 @@ public:
     virtual void Run() = 0;
 	virtual ActorType GetType();
 	virtual ~Actor();
+	pthread_mutex_t GetMutex();
 
 protected:
     template<typename T>
     void Send(T &message, MessageType type,  int receiver) {
+    	pthread_mutex_lock(&this->mpi_mutex);
         MPI_Send(&message, sizeof(T), MPI_BYTE, receiver, (int)type, MPI_COMM_WORLD);
+        pthread_mutex_unlock(&this->mpi_mutex);
     }
 
     MessageModel Receive(int source, int type, MPI_Status *status);
@@ -36,8 +39,9 @@ protected:
 	int id;
 	bool isworking;
 	bool wants_to_send;
+	pthread_mutex_t mpi_mutex;
     int timer;
-
+    
 private:
 	static void *thread_provider(void* object);
 };
