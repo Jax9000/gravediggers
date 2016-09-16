@@ -20,12 +20,14 @@ public:
 	Actor(int id);
 	virtual ActorType GetType();
 	virtual ~Actor();
+	pthread_mutex_t GetMutex();
 
 protected:
 	ActorType actor_type;
 	int id;
 	bool isworking;
 	bool wants_to_send;
+	pthread_mutex_t mpi_mutex;
 
 private:
 	static void *thread_provider(void* object);

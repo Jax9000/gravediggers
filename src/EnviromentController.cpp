@@ -59,6 +59,7 @@ void EnviromentController::RunOfficial(int id) {
 
 void EnviromentController::RunMonitor(Actor* actor) {
 	Monitor* monitor = MonitorFactory::Build(actor->GetType());
+	monitor->SetMutex(actor->GetMutex());
 	pthread_t thread;
 	pthread_create(&thread, NULL, &EnviromentController::thread_provider, monitor);
 }

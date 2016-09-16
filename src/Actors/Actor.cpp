@@ -8,6 +8,7 @@
 #include "Actor.h"
 
 Actor::Actor() {
+	mpi_mutex = PTHREAD_MUTEX_INITIALIZER;
 	actor_type = UNDEFINED;
 	id = -1;
 	wants_to_send = false;
@@ -26,4 +27,8 @@ ActorType Actor::GetType() {
 }
 
 Actor::~Actor() {
+}
+
+pthread_mutex_t Actor::GetMutex() {
+	return this->mpi_mutex;
 }
