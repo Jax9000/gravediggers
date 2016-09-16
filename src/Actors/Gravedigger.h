@@ -14,6 +14,7 @@
 class Gravedigger : public Actor{
 public:
 	Gravedigger(int id);
+    virtual void Run();
 	virtual ~Gravedigger();
 };
 

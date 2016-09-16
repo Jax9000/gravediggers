@@ -13,6 +13,7 @@
 class Administration : public Actor{
 public:
 	Administration(int id);
+    virtual void Run();
 	virtual ~Administration();
 };
 

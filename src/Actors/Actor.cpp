@@ -18,7 +18,7 @@ Actor::Actor(int id) {
 	this->id = id;
 	this->actor_type = ActorUtils::ConvertId2Type(this->id);
 	wants_to_send = false;
-	isworking = false;
+    isworking = false;
 }
 
 ActorType Actor::GetType() {
@@ -41,5 +41,3 @@ MessageModel Actor::Receive(int source, int type)
     MPI_Recv(&msg, sizeof(MessageModel), MPI_BYTE, source, type, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     return msg;
 }
-
-

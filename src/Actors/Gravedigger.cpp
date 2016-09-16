@@ -12,6 +12,10 @@ Gravedigger::Gravedigger(int id) : Actor(id) {
 
 }
 
+void Gravedigger::Run() {
+
+}
+
 Gravedigger::~Gravedigger() {
 	// TODO Auto-generated destructor stub
 }

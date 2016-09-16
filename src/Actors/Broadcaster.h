@@ -15,7 +15,7 @@
 class Broadcaster : public Actor {
 public:
 	Broadcaster(int id);
-	void Run();
+    virtual void Run();
 	void Stop();
 };
 
