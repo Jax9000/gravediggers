@@ -16,7 +16,7 @@ Actor::Actor() {
 
 Actor::Actor(int id) {
 	this->id = id;
-	this->actor_type = ActorUtils::ConvertId2Type(this->id);
+	this->actor_type = ActorUtils::ConvertProcessIdToType(this->id);
 	wants_to_send = false;
 	isworking = false;
 }

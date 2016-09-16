@@ -7,14 +7,15 @@
 
 #include "ActorUtils.h"
 
-ActorType ActorUtils::ConvertId2Type(int id) {
+ActorType ActorUtils::ConvertProcessIdToType(int id) {
 	switch(id){
 	case 0:
-		return ADMINISTRATION;
+		return BROADCASTER;
 	case 1:
+		return ADMINISTRATION;
+	case 2:
 		return OFFICIAL;
 	default:
 		return GRAVEDIGGER;
 	}
-	return UNDEFINED;
 }

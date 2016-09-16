@@ -10,6 +10,7 @@
 
 #include <mpi.h>
 #include <pthread.h>
+#include <iostream>
 
 #include "../Utils/ActorUtils.h"
 
