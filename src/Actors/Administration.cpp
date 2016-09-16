@@ -13,7 +13,7 @@ Administration::Administration(int id) : Actor::Actor(id) {
 }
 
 void Administration::Run() {
-
+    
 }
 
 Administration::~Administration() {

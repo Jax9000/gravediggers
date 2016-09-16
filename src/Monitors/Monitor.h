@@ -10,19 +10,19 @@
 
 #include "../Actors/Actor.h"
 
-class Monitor {
+#include <src/Utils/BaseMutexMPI.h>
+
+class Monitor : public BaseMutexMPI {
 public:
 	void* Run();
 	void Stop();
-	void SetActor(Actor* actor);
-	void SetMutex(pthread_mutex_t mutex);
+    Monitor(Actor* actor, pthread_mutex_t mutex);
 	virtual ~Monitor();
 
 protected:
 	virtual void ListenAndHandleMassages();
 
-	Actor* actor;
-	pthread_mutex_t mpi_mutex;
+    Actor* actor;
 	bool is_working;
 };
 

@@ -10,7 +10,9 @@
 
 #include "Actor.h"
 
-class Administration : public Actor{
+#include <src/Utils/BaseCommunicationMPI.h>
+
+class Administration : public Actor, public BaseCommunicationMPI {
 public:
 	Administration(int id);
     virtual void Run();

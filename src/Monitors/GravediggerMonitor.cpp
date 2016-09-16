@@ -7,3 +7,8 @@
 
 #include "GravediggerMonitor.h"
 
+
+
+GravediggerMonitor::GravediggerMonitor(Gravedigger *digger, pthread_mutex_t mutex) : Monitor(digger, mutex)
+{
+}
