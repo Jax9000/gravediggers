@@ -26,7 +26,9 @@ public:
 protected:
     template<typename T>
     void Send(T &message, MessageType type,  int receiver) {
+    	pthread_mutex_lock(&this->mpi_mutex);
         MPI_Send(&message, sizeof(T), MPI_BYTE, receiver, (int)type, MPI_COMM_WORLD);
+        pthread_mutex_unlock(&this->mpi_mutex);
     }
 
     MessageModel Receive(int source, int type, MPI_Status *status);
