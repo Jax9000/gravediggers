@@ -6,6 +6,7 @@
  */
 
 #include "Broadcaster.h"
+#include <iostream>
 
 Broadcaster::Broadcaster(int id) : Actor() {
 	this->id = id;
@@ -22,6 +23,8 @@ void Broadcaster::Run() {
 	message.actor_type = this->actor_type;
 	message.message_type = SPAM;
 	message.process_id = this->id;
+
+    std::cout << "Process " << MpiHelper::ProcesID() << ".\n";
 
 	while(isworking){
 		for(int i=0; i<size; i++){
