@@ -27,3 +27,19 @@ ActorType Actor::GetType() {
 
 Actor::~Actor() {
 }
+
+MessageModel Actor::Receive(int source, int type, MPI_Status *status)
+{
+    MessageModel msg;
+    MPI_Recv(&msg, sizeof(MessageModel), MPI_BYTE, source, type, MPI_COMM_WORLD, status);
+    return msg;
+}
+
+MessageModel Actor::Receive(int source, int type)
+{
+    MessageModel msg;
+    MPI_Recv(&msg, sizeof(MessageModel), MPI_BYTE, source, type, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    return msg;
+}
+
+

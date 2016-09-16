@@ -20,8 +20,7 @@ void Broadcaster::Run() {
 	int size;
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 	MessageModel message;
-	message.actor_type = this->actor_type;
-	message.message_type = SPAM;
+    message.actor_type = this->actor_type;
 	message.process_id = this->id;
 
     std::cout << "Process " << MpiHelper::ProcesID() << ".\n";
@@ -29,7 +28,8 @@ void Broadcaster::Run() {
 	while(isworking){
 		for(int i=0; i<size; i++){
 			if(i != id){
-				MPI_Send(&message, sizeof(MessageModel), MPI_BYTE, i, 1, MPI_COMM_WORLD);
+                std::cout << "Send to " << i << ".\n";
+                Send(message, SPAM, i);
 			}
 		}
 
