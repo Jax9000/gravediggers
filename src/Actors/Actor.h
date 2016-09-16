@@ -29,21 +29,6 @@ protected:
         MPI_Send(&message, sizeof(T), MPI_BYTE, receiver, (int)type, MPI_COMM_WORLD);
     }
 
-//    void * Receive(int source, MessageType type, MPI_Comm comm, MPI_Status *status) {
-//        void * msg;
-//        int size = 0;
-//        switch (type) {
-//        case SPAM:
-//            msg = new MessageModel();
-//            size = sizeof(MessageModel);
-//            break;
-//        default:
-//            break;
-//        }
-//        MPI_Recv(msg, size, MPI_BYTE, source, (int)type, comm, status);
-//        return msg;
-//    }
-
     MessageModel Receive(int source, int type, MPI_Status *status);
     MessageModel Receive(int source, int type);
     

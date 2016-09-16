@@ -11,7 +11,6 @@
 #include <mpi.h>
 #include "Actors/Administration.h"
 #include "Actors/Gravedigger.h"
-#include "Actors/Official.h"
 #include "Actors/Broadcaster.h"
 #include "Enums/ActorType.h"
 #include "Monitors/Monitor.h"
@@ -19,8 +18,7 @@
 
 #define BROADCASTER 0
 #define ADMINISTRATION 1
-#define OFFICIAL 2
-#define GRAVEDIGGER 3
+#define GRAVEDIGGER 2
 
 class EnviromentController {
 public:
@@ -31,7 +29,6 @@ private:
 	void RunBroadcaster(int id);
 	void RunAdministration(int id);
 	void RunGravedigger(int id);
-	void RunOfficial(int id);
 	void RunMonitor(Actor* actor);
 	static void* thread_provider(void *object);
 };

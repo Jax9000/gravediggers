@@ -30,9 +30,6 @@ void EnviromentController::Start() {
 	case ADMINISTRATION:
 		RunAdministration(id);
 		break;
-	case OFFICIAL:
-		RunOfficial(id);
-		break;
 	default:
 		RunGravedigger(id);
 		break;
@@ -52,10 +49,6 @@ void EnviromentController::RunGravedigger(int id) {
 void EnviromentController::RunBroadcaster(int id) {
 	Broadcaster instance(id);
 	instance.Run();
-}
-
-void EnviromentController::RunOfficial(int id) {
-	Official instance(id);
 }
 
 void EnviromentController::RunMonitor(Actor* actor) {

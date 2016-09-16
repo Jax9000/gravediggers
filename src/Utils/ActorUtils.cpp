@@ -13,8 +13,6 @@ ActorType ActorUtils::ConvertProcessIdToType(int id) {
 		return BROADCASTER;
 	case 1:
 		return ADMINISTRATION;
-	case 2:
-		return OFFICIAL;
 	default:
 		return GRAVEDIGGER;
 	}
