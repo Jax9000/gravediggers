@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include "BaseCommunicationMPI.h"
 
-class BaseMutexMPI : BaseCommunicationMPI
+class BaseMutexMPI : public BaseCommunicationMPI
 {
 public:
     BaseMutexMPI();

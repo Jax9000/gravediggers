@@ -11,7 +11,8 @@
 enum MessageType {
 	EXAMPLE_TYPE,
 	SPAM,
-	DEAD_MAN_LIST
+	DEAD_MAN_LIST,
+	DEAD_MAN_REQUEST
 	//TODO finish types
 };
 

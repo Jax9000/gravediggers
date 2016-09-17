@@ -10,7 +10,7 @@ void BaseCommunicationMPI::Send(MessageModel &message, MessageType type,
 	message.time = lamport_time;
 	MPI_Send(&message, sizeof(MessageModel), MPI_BYTE, receiver, (int) type,
 			MPI_COMM_WORLD);
-	cout << "sended from " << MpiHelper::ProcesID() << " to " << receiver
+	cout << "Sended from " << MpiHelper::ProcesID() << " to " << receiver
 			<< " type: " << type << " time: " << lamport_time << endl;
 }
 
@@ -19,7 +19,7 @@ MessageModel BaseCommunicationMPI::Receive(int source, int type,
 	MessageModel msg;
 	MPI_Recv(&msg, sizeof(MessageModel), MPI_BYTE, source, type, MPI_COMM_WORLD,
 			status);
-	cout << "recieved from " << status->MPI_SOURCE << " to "
+	cout << "Recieved from " << status->MPI_SOURCE << " to "
 			<< MpiHelper::ProcesID() << " type: " << type << " time: "
 			<< lamport_time << endl;
 	lamport_time = std::max(msg.time, lamport_time) + 1;
@@ -27,5 +27,6 @@ MessageModel BaseCommunicationMPI::Receive(int source, int type,
 }
 
 MessageModel BaseCommunicationMPI::Receive(int source, int type) {
-	return Receive(source, type, MPI_STATUS_IGNORE);
+	MPI_Status status;
+	return Receive(source, type, &status);
 }

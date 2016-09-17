@@ -8,7 +8,8 @@
 #include "Broadcaster.h"
 #include <iostream>
 
-Broadcaster::Broadcaster(int id) : Actor() {
+Broadcaster::Broadcaster(int id) :
+		Actor() {
 	this->id = id;
 	this->actor_type = ActorUtils::ConvertProcessIdToType(this->id);
 	this->isworking = false;
@@ -21,11 +22,9 @@ void Broadcaster::Run() {
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 	MessageModel message;
 
-    while(isworking) {
-        for(int i=0; i<size; i++) {
-			if(i != id){
-                Send(message, SPAM, i);
-			}
+	while (isworking) {
+		for (int i = GRAVEDIGGER; i < size; i++) {
+			Send(message, SPAM, i);
 		}
 
 		sleep(1);
