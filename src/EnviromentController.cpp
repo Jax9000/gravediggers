@@ -8,7 +8,6 @@
 #include "EnviromentController.h"
 #include <unistd.h>
 #include <iostream>
-#include <src/Monitors/GravediggerMonitor.h>
 
 EnviromentController::EnviromentController(int argc, char* argv[]) {
 	int provided;
@@ -38,22 +37,22 @@ void EnviromentController::Start() {
     actor->Run();
 }
 
-Actor* EnviromentController::RunAdministration(int id) {
-    Administration instance(id);
-    return& instance;
+Administration* EnviromentController::RunAdministration(int id) {
+    Administration* instance = new Administration(id);
+    return instance;
 }
 
-Actor* EnviromentController::RunGravedigger(int id) {
-	Gravedigger instance(id);
-    GravediggerMonitor * monitor = new GravediggerMonitor(&instance, instance.GetMutex());
+Gravedigger* EnviromentController::RunGravedigger(int id) {
+	Gravedigger* instance = new Gravedigger(id);
+    GravediggerMonitor * monitor = new GravediggerMonitor(instance, instance->GetMutex());
     pthread_t thread;
     pthread_create(&thread, NULL, &EnviromentController::thread_provider, monitor);
-    return &instance;
+    return instance;
 }
 
-Actor* EnviromentController::RunBroadcaster(int id) {
-    Broadcaster instance(id);
-    return &instance;
+Broadcaster* EnviromentController::RunBroadcaster(int id) {
+    Broadcaster* instance = new Broadcaster(id);
+    return instance;
 }
 
 void* EnviromentController::thread_provider(void* object) {

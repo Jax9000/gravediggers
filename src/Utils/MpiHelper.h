@@ -4,6 +4,7 @@
 class MpiHelper {
 public:
     static int ProcesID();
+    static int GetSize();
 };
 
 #endif // MPIHELPER_H

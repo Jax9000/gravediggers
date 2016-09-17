@@ -10,7 +10,7 @@
 
 #include "../Actors/Actor.h"
 
-#include <src/Utils/BaseMutexMPI.h>
+#include "../Utils/BaseMutexMPI.h"
 
 class Monitor : public BaseMutexMPI {
 public:

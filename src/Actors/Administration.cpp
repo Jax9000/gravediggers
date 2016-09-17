@@ -9,17 +9,18 @@
 
 Administration::Administration(int id) : Actor::Actor(id) {
 	// TODO Auto-generated constructor stub
+	current_umarlak = 0;
     srand (time(NULL));
 }
 
 void Administration::Run() {
-    isworking = true;
+	isworking = true;
     while(isworking){
-        int umarlaks[20];
-        fillWithUmarlaks(umarlaks, 20);
-        MessageModel model;
-        model.umarlaks = umarlaks;
-//TODO send to others
+        MessageModel msg;
+        fillWithUmarlaks(msg.umarlaks, 20);
+        for(int i=GRAVEDIGGER; i<MpiHelper::GetSize(); i++){
+        	Send(msg, DEAD_MAN_LIST, i);
+        }
         sleep(rand()%MAX_SLEEP_TIME);
     }
 }

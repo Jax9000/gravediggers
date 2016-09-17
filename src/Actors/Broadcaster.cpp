@@ -20,8 +20,6 @@ void Broadcaster::Run() {
 	int size;
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 	MessageModel message;
-    message.actor_type = this->actor_type;
-	message.process_id = this->id;
 
     while(isworking) {
         for(int i=0; i<size; i++) {
@@ -30,7 +28,7 @@ void Broadcaster::Run() {
 			}
 		}
 
-		usleep(200);
+		sleep(1);
 	}
 }
 

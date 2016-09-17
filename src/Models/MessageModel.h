@@ -17,9 +17,6 @@
 using namespace std;
 
 struct MessageModel {
-    enum ActorType actor_type;
-	int process_id;
-	char content[BUFF_SIZE];
     int time;
     int umarlaks[20];
 };

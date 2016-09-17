@@ -10,6 +10,7 @@
 
 #include <mpi.h>
 #include <pthread.h>
+#include <iostream>
 #include "../Utils/MpiHelper.h"
 #include "../Utils/ActorUtils.h"
 
@@ -17,7 +18,9 @@ class Actor {
 public:
 	Actor();
 	Actor(int id);
-    virtual void Run() = 0;
+    virtual void Run(){
+    	std::cout << "xD" << std::endl;
+    }
 	virtual ActorType GetType();
 	virtual ~Actor();
 

@@ -13,14 +13,14 @@
 #include <unistd.h>
 
 #include "Actor.h"
-#include <src/Utils/BaseCommunicationMPI.h>
+#include "../Utils/BaseCommunicationMPI.h"
 
 #define MAX_SLEEP_TIME 10
 
-class Administration : public Actor, public BaseCommunicationMPI {
+class Administration : public BaseCommunicationMPI, public Actor{
 public:
 	Administration(int id);
-    virtual void Run();
+    void Run();
 	virtual ~Administration();
 
 protected:

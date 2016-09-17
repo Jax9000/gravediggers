@@ -16,7 +16,7 @@
 class Gravedigger : public Actor, public BaseMutexMPI {
 public:
 	Gravedigger(int id);
-    virtual void Run();
+	void Run() override;
 	virtual ~Gravedigger();
 };
 
