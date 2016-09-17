@@ -9,9 +9,11 @@
 #define GRAVEDIGGERMONITOR_H_
 
 #include "Monitor.h"
+#include "../Actors/Gravedigger.h"
 
 class GravediggerMonitor : public Monitor{
-
+public:
+    GravediggerMonitor(Gravedigger * digger,  pthread_mutex_t mutex);
 };
 
 #endif /* GRAVEDIGGERMONITOR_H_ */

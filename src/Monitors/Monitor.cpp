@@ -15,16 +15,14 @@ void* Monitor::Run() {
 	return 0;
 }
 
-void Monitor::SetActor(Actor* actor) {
-	this->actor = actor;
-}
-
-void Monitor::SetMutex(pthread_mutex_t mutex) {
-	this->mpi_mutex = mutex;
-}
-
 void Monitor::Stop() {
-	is_working = false;
+    is_working = false;
+}
+
+Monitor::Monitor(Actor *actor, pthread_mutex_t mutex)
+{
+    this->actor = actor;
+    this->mpi_mutex = mutex;
 }
 
 void Monitor::ListenAndHandleMassages() {

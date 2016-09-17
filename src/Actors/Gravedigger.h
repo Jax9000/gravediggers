@@ -10,10 +10,13 @@
 
 #include "Actor.h"
 
+#include "../Utils/BaseMutexMPI.h"
 
-class Gravedigger : public Actor{
+
+class Gravedigger : public Actor, public BaseMutexMPI {
 public:
 	Gravedigger(int id);
+    virtual void Run();
 	virtual ~Gravedigger();
 };
 

@@ -12,10 +12,12 @@
 #include "../Models/MessageModel.h"
 #include "unistd.h"
 
-class Broadcaster : public Actor {
+#include <src/Utils/BaseCommunicationMPI.h>
+
+class Broadcaster : public Actor, BaseCommunicationMPI {
 public:
 	Broadcaster(int id);
-	void Run();
+    virtual void Run();
 	void Stop();
 };
 

@@ -8,6 +8,7 @@
 #include "EnviromentController.h"
 #include <unistd.h>
 #include <iostream>
+#include <src/Monitors/GravediggerMonitor.h>
 
 EnviromentController::EnviromentController(int argc, char* argv[]) {
 	int provided;
@@ -22,40 +23,37 @@ EnviromentController::EnviromentController(int argc, char* argv[]) {
 void EnviromentController::Start() {
 	int id;
 	MPI_Comm_rank(MPI_COMM_WORLD, &id);
-
+    Actor* actor;
 	switch(id){
 	case BROADCASTER:
-		RunBroadcaster(id);
+        actor = RunBroadcaster(id);
 		break;
 	case ADMINISTRATION:
-		RunAdministration(id);
+        actor = RunAdministration(id);
 		break;
 	default:
-		RunGravedigger(id);
+        actor = RunGravedigger(id);
 		break;
 	}
+    actor->Run();
 }
 
-void EnviromentController::RunAdministration(int id) {
-	Administration instance(id);
-	RunMonitor(&instance);
+Actor* EnviromentController::RunAdministration(int id) {
+    Administration instance(id);
+    return& instance;
 }
 
-void EnviromentController::RunGravedigger(int id) {
+Actor* EnviromentController::RunGravedigger(int id) {
 	Gravedigger instance(id);
-
+    GravediggerMonitor * monitor = new GravediggerMonitor(&instance, instance.GetMutex());
+    pthread_t thread;
+    pthread_create(&thread, NULL, &EnviromentController::thread_provider, monitor);
+    return &instance;
 }
 
-void EnviromentController::RunBroadcaster(int id) {
-	Broadcaster instance(id);
-	instance.Run();
-}
-
-void EnviromentController::RunMonitor(Actor* actor) {
-	Monitor* monitor = MonitorFactory::Build(actor->GetType());
-	monitor->SetMutex(actor->GetMutex());
-	pthread_t thread;
-	pthread_create(&thread, NULL, &EnviromentController::thread_provider, monitor);
+Actor* EnviromentController::RunBroadcaster(int id) {
+    Broadcaster instance(id);
+    return &instance;
 }
 
 void* EnviromentController::thread_provider(void* object) {

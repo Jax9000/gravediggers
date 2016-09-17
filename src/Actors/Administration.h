@@ -8,12 +8,24 @@
 #ifndef ADMINISTRATION_H_
 #define ADMINISTRATION_H_
 
-#include "Actor.h"
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
 
-class Administration : public Actor{
+#include "Actor.h"
+#include <src/Utils/BaseCommunicationMPI.h>
+
+#define MAX_SLEEP_TIME 10
+
+class Administration : public Actor, public BaseCommunicationMPI {
 public:
 	Administration(int id);
+    virtual void Run();
 	virtual ~Administration();
+
+protected:
+    void fillWithUmarlaks(int* array, int size);
+    int current_umarlak;
 };
 
 #endif /* ADMINISTRATION_H_ */

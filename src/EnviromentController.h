@@ -14,7 +14,6 @@
 #include "Actors/Broadcaster.h"
 #include "Enums/ActorType.h"
 #include "Monitors/Monitor.h"
-#include "Monitors/MonitorFactory.h"
 
 #define BROADCASTER 0
 #define ADMINISTRATION 1
@@ -26,10 +25,9 @@ public:
 	void Start();
 
 private:
-	void RunBroadcaster(int id);
-	void RunAdministration(int id);
-	void RunGravedigger(int id);
-	void RunMonitor(Actor* actor);
+    Actor* RunBroadcaster(int id);
+    Actor* RunAdministration(int id);
+    Actor* RunGravedigger(int id);
 	static void* thread_provider(void *object);
 };
 
