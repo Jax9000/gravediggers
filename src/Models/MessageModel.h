@@ -9,6 +9,8 @@
 #define MESSAGEMODEL_H_
 #define BUFF_SIZE 32
 
+#include <vector>
+
 #include "../Enums/MessageType.h"
 #include "../Enums/ActorType.h"
 
@@ -18,6 +20,8 @@ struct MessageModel {
     enum ActorType actor_type;
 	int process_id;
 	char content[BUFF_SIZE];
+    int time;
+    int umarlaks[20];
 };
 
 #endif /* MESSAGEMODEL_H_ */

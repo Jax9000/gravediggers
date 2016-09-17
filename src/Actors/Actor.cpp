@@ -11,7 +11,7 @@ Actor::Actor() {
 	actor_type = UNDEFINED;
 	id = -1;
 	wants_to_send = false;
-	isworking = false;
+    isworking = false;
 }
 
 Actor::Actor(int id) {

@@ -26,7 +26,6 @@ void Broadcaster::Run() {
     while(isworking) {
         for(int i=0; i<size; i++) {
 			if(i != id){
-                std::cout << "Send to " << i << ".\n";
                 Send(message, SPAM, i);
 			}
 		}

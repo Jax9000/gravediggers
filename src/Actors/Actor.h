@@ -24,9 +24,9 @@ public:
 protected:
 	ActorType actor_type;
 	int id;
-	bool isworking;
+    bool isworking;
 	bool wants_to_send;
     int timer;
-};
 
+};
 #endif /* ACTOR_H_ */

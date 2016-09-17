@@ -2,21 +2,23 @@
 #define BASECOMMUNICATIONMPI_H
 
 #include <mpi.h>
-
+#include <algorithm>
+#include <iostream>
 #include "../Models/MessageModel.h"
+#include "../Utils/MpiHelper.h"
+
+using namespace std;
 
 class BaseCommunicationMPI
 {
-protected:
+public:
     BaseCommunicationMPI();
 protected:
-    template<typename T>
-    void Send(T &message, MessageType type,  int receiver) {
-        MPI_Send(&message, sizeof(T), MPI_BYTE, receiver, (int)type, MPI_COMM_WORLD);
-    }
-
+    void Send(MessageModel &message, MessageType type,  int receiver);
     MessageModel Receive(int source, int type, MPI_Status *status);
     MessageModel Receive(int source, int type);
+
+    int lamport_time;
 
 };
 
