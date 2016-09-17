@@ -13,7 +13,13 @@
 
 class GravediggerMonitor : public Monitor{
 public:
-    GravediggerMonitor(Gravedigger * digger,  pthread_mutex_t mutex);
+    GravediggerMonitor(Gravedigger * digger);
+
+protected:
+    Gravedigger* GetGravedigger();
+    void ListenAndHandleMassages();
+
+    int * respondTab;
 };
 
 #endif /* GRAVEDIGGERMONITOR_H_ */

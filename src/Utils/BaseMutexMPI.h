@@ -10,7 +10,6 @@ public:
     BaseMutexMPI();
     pthread_mutex_t GetMutex();
 
-protected:
         template<typename T>
         void SafeSend(T &message, MessageType type,  int receiver) {
             pthread_mutex_lock(&this->mpi_mutex);
@@ -20,6 +19,8 @@ protected:
 
         MessageModel SafeReceive(int source, int type, MPI_Status *status);
         MessageModel SafeReceive(int source, int type);
+protected:
+
         pthread_mutex_t mpi_mutex;
 };
 

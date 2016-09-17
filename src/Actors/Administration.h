@@ -26,6 +26,9 @@ public:
 protected:
     void fillWithUmarlaks(int* array, int size);
     int current_umarlak;
+
+private:
+	static const int DEAD_LIST_SIZE = 2;
 };
 
 #endif /* ADMINISTRATION_H_ */

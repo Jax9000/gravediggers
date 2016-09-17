@@ -13,10 +13,10 @@ class BaseCommunicationMPI
 {
 public:
     BaseCommunicationMPI();
-protected:
     void Send(MessageModel &message, MessageType type,  int receiver);
     MessageModel Receive(int source, int type, MPI_Status *status);
     MessageModel Receive(int source, int type);
+
 
     int lamport_time;
 

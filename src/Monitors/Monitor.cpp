@@ -19,10 +19,9 @@ void Monitor::Stop() {
     is_working = false;
 }
 
-Monitor::Monitor(Actor *actor, pthread_mutex_t mutex)
+Monitor::Monitor(Actor *actor)
 {
     this->actor = actor;
-    this->mpi_mutex = mutex;
 }
 
 void Monitor::ListenAndHandleMassages() {

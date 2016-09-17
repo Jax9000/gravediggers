@@ -10,14 +10,13 @@
 Administration::Administration(int id) : Actor::Actor(id) {
 	// TODO Auto-generated constructor stub
 	current_umarlak = 0;
-    srand (time(NULL));
 }
 
 void Administration::Run() {
 	isworking = true;
     while(isworking){
         MessageModel msg;
-        fillWithUmarlaks(msg.umarlaks, 20);
+		fillWithUmarlaks(msg.umarlaks, DEAD_LIST_SIZE);
         for(int i=GRAVEDIGGER; i<MpiHelper::GetSize(); i++){
         	Send(msg, DEAD_MAN_LIST, i);
         }

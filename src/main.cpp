@@ -5,8 +5,6 @@
 
 int main(int argc, char *argv[]) {
 
-	srand (time(NULL));
-
 	EnviromentController enviroment_controller(argc, argv);
 	enviroment_controller.Start();
 

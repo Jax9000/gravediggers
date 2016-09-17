@@ -12,11 +12,11 @@
 
 #include "../Utils/BaseMutexMPI.h"
 
-class Monitor : public BaseMutexMPI {
+class Monitor {
 public:
 	void* Run();
 	void Stop();
-    Monitor(Actor* actor, pthread_mutex_t mutex);
+    Monitor(Actor* actor);
 	virtual ~Monitor();
 
 protected:
