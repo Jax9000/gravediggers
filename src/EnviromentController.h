@@ -16,6 +16,7 @@
 #include "Actors/Broadcaster.h"
 #include "Enums/ActorType.h"
 #include "Monitors/Monitor.h"
+#include "Actors/Logger.h"
 
 
 class EnviromentController {

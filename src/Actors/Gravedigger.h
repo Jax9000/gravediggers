@@ -43,12 +43,14 @@ public:
 		return request_status;
 	}
 
+	void removeFromLocalDeadList(int);
+
 	int request_number;
 	std::vector<pair<int, int> > officeQueue;
+	vector<int> entombed_list;
 
 private:
 	vector<int> local_dead_list;
-	bool accept_request;
 	bool can_remove;
 	int dead_man;
 	int request_time;
@@ -60,6 +62,9 @@ private:
 	void entomb();
 	bool isDeadListEmpty();
 	int getNextDeadMan();
+
+
+    void BroadcastOtherGravediggers(MessageModel &msg, MessageType type);
 };
 
 #endif /* GRAVEDIGGER_H_ */

@@ -22,7 +22,9 @@ class VectorUtils {
 public:
 	template<typename T>
 	static T GetRandomElement(std::vector<T> vec){
-		return vec[rand() % vec.size()];
+		if(vec.size() > 0)
+			return vec[rand() % vec.size()];
+		return -1;
 	}
 };
 

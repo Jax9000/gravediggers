@@ -18,8 +18,8 @@ using namespace std;
 
 struct MessageModel {
     int time;
-    int requesting_dead_man;
-    int umarlaks[20];;
+    int iValue;
+    int umarlaks[20];
     bool bValue;
 };
 

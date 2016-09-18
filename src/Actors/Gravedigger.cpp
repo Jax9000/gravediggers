@@ -34,30 +34,46 @@ void Gravedigger::deadManRequest(int dead_man) {
 	for (int i = GRAVEDIGGER; i < MpiHelper::GetSize(); i++) {
 		if (i != MpiHelper::ProcesID()) {
 			MessageModel msg;
-			msg.requesting_dead_man = dead_man;
+			msg.iValue = dead_man;
 			SafeSend(msg, DEAD_MAN_REQUEST, i);
 		}
 	}
 }
 
-void Gravedigger::entomb() {
-	cout << "Entombed [" << dead_man << "] by [" << id << "]\n";
-	//sleep(rand() %  + 2);
-	usleep(rand()%5000);
-	lamport_time++;
-	pthread_mutex_lock(&this->process_mutex);
+void Gravedigger::removeFromLocalDeadList(int dead_id) {
+	if(local_dead_list.size() > 0) {
 	local_dead_list.erase(
 			std::remove(local_dead_list.begin(), local_dead_list.end(),
-					dead_man), local_dead_list.end());
+					dead_id), local_dead_list.end());
+	}
+}
+
+void Gravedigger::entomb() {
+	std::stringstream ss;
+	ss << "Entombed [" << dead_man << "] by [" << id << "]\n";
+	Log(ss);
+	entombed_list.push_back(dead_man);
+	//sleep(rand() %  + 2);
+	usleep(rand()%5000);
+	pthread_mutex_lock(&this->mpi_mutex);
+	lamport_time++;
+	pthread_mutex_unlock(&this->mpi_mutex);
+
+	pthread_mutex_lock(&this->process_mutex);
+	removeFromLocalDeadList(dead_man);
 	pthread_mutex_unlock(&this->process_mutex);
-	//TODO:
-	//send to others info about entombing
+
+	MessageModel msg;
+	msg.iValue = dead_man;
+	BroadcastOtherGravediggers(msg, DEAD_MAN_ENTOMBED);
+
+
 	dead_man = -1;
 }
 
 bool Gravedigger::isDeadListEmpty() {
 	pthread_mutex_lock(&this->process_mutex);
-	bool ret = local_dead_list.size() > 0;
+	bool ret = local_dead_list.size() == 0;
 	pthread_mutex_unlock(&this->process_mutex);
 	return ret;
 }
@@ -75,23 +91,20 @@ void Gravedigger::Run() {
 
 	while (isworking) {
 		sleep(2);
-		if (isDeadListEmpty()) {
+		if (!isDeadListEmpty()) {
 			can_remove = false;
-			while (!can_remove) {
+			while (!can_remove ) {
+				usleep(rand() % 100);
+				while(isDeadListEmpty());
 				dead_man = getNextDeadMan();
 				request_status = WAIT;
 				deadManRequest(dead_man);
 				can_remove = waitForDeadRespond();
 			}
 
-			MessageModel msg;
-			msg.requesting_dead_man = dead_man;
-			for (int i = GRAVEDIGGER; i < MpiHelper::GetSize(); i++) {
-				if (i != MpiHelper::ProcesID())
-					SafeSend(msg, DEAD_MAN_ENTOMBED, i);
-			}
-
 			entomb();
+
+
 
 			officeQueue.push_back(std::make_pair(id, lamport_time));
 			std::sort(officeQueue.begin(), officeQueue.end(), sort_pred());
@@ -110,4 +123,13 @@ bool Gravedigger::waitForDeadRespond() {
 		return true;
 	}
 	return false;
+}
+
+void Gravedigger::BroadcastOtherGravediggers(MessageModel& msg,
+		MessageType type) {
+	for(int i = GRAVEDIGGER; i < MpiHelper::GetSize(); i++) {
+		if(i != id) {
+			SafeSend(msg, type, i);
+		}
+	}
 }

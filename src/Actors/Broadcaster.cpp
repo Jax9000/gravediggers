@@ -27,7 +27,7 @@ void Broadcaster::Run() {
 			Send(message, SPAM, i);
 		}
 
-		sleep(1);
+		usleep(BROADCAST_DELAY);
 	}
 }
 

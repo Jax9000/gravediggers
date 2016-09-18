@@ -30,6 +30,9 @@ void EnviromentController::Start() {
 	case ADMINISTRATION:
         actor = RunAdministration(id);
 		break;
+	case LOGGER:
+		actor = new Logger();
+		break;
 	default:
         actor = RunGravedigger(id);
 		break;
