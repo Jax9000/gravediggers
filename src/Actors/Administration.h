@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #include "Actor.h"
+#include "../Defines.h"
 #include "../Utils/BaseCommunicationMPI.h"
 
 #define MAX_SLEEP_TIME 10
@@ -27,8 +28,6 @@ protected:
     void fillWithUmarlaks(int* array, int size);
     int current_umarlak;
 
-private:
-	static const int DEAD_LIST_SIZE = 2;
 };
 
 #endif /* ADMINISTRATION_H_ */

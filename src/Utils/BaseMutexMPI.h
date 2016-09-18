@@ -8,7 +8,6 @@ class BaseMutexMPI : public BaseCommunicationMPI
 {
 public:
     BaseMutexMPI();
-    pthread_mutex_t GetMutex();
 
         template<typename T>
         void SafeSend(T &message, MessageType type,  int receiver) {

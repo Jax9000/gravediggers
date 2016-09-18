@@ -11,10 +11,10 @@
 #include <iostream>
 #include <unistd.h>
 #include <algorithm>
-//#include <tuple>
 
 #include "Actor.h"
 
+#include "../Defines.h"
 #include "../Utils/BaseMutexMPI.h"
 #include "../Utils/VectorUtils.h"
 #include "../Utils/MpiHelper.h"
@@ -53,10 +53,13 @@ private:
 	int dead_man;
 	int request_time;
 	RequestStatus request_status;
+    pthread_mutex_t process_mutex;
 
 	void deadManRequest(int dead_man);
 	bool waitForDeadRespond();
 	void entomb();
+	bool isDeadListEmpty();
+	int getNextDeadMan();
 };
 
 #endif /* GRAVEDIGGER_H_ */

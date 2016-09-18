@@ -3,6 +3,7 @@
 
 BaseMutexMPI::BaseMutexMPI()
 {
+	mpi_mutex = PTHREAD_MUTEX_INITIALIZER;
 }
 
 MessageModel BaseMutexMPI::SafeReceive(int source, int type, MPI_Status *status)
@@ -17,9 +18,4 @@ MessageModel BaseMutexMPI::SafeReceive(int source, int type, MPI_Status *status)
 MessageModel BaseMutexMPI::SafeReceive(int source, int type)
 {
     return SafeReceive(source, type, MPI_STATUS_IGNORE);
-}
-
-pthread_mutex_t BaseMutexMPI::GetMutex()
-{
-    return  this->mpi_mutex;
 }

@@ -18,11 +18,13 @@ class Actor {
 public:
 	Actor();
 	Actor(int id);
-    virtual void Run(){
-    	std::cout << "xD" << std::endl;
-    }
+    virtual void Run() = 0;
 	virtual ActorType GetType();
 	virtual ~Actor();
+
+	bool getIsworking() {
+		return isworking;
+	}
 
 protected:
 	ActorType actor_type;

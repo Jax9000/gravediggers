@@ -23,7 +23,7 @@ protected:
 	virtual void ListenAndHandleMassages();
 
     Actor* actor;
-	bool is_working;
+    bool is_working;
 };
 
 #endif /* MONITOR_H_ */

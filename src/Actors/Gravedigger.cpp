@@ -16,17 +16,17 @@ struct sort_pred {
 Gravedigger::Gravedigger(int id) :
 		Actor(id) {
 	// TODO Auto-generated constructor stub
-	mpi_mutex = PTHREAD_MUTEX_INITIALIZER;
 	dead_man = -1;
 	request_number = 0;
+	process_mutex = PTHREAD_MUTEX_INITIALIZER;
 }
 
 void Gravedigger::UpdateLocalList(const MessageModel& msg) {
-	//TODO:
-	//Add mutex to local_dead_list
-	for (int i = 0; i < 20; i++) {
-		local_dead_list.push_back(msg.umarlaks[i]);
-	}
+	pthread_mutex_lock(&this->process_mutex);
+		for (int i = 0; i < DEAD_LIST_SIZE; i++) {
+			local_dead_list.push_back(msg.umarlaks[i]);
+		}
+	pthread_mutex_unlock(&this->process_mutex);
 }
 
 void Gravedigger::deadManRequest(int dead_man) {
@@ -45,12 +45,28 @@ void Gravedigger::entomb() {
 	//sleep(rand() %  + 2);
 	usleep(rand()%5000);
 	lamport_time++;
+	pthread_mutex_lock(&this->process_mutex);
 	local_dead_list.erase(
 			std::remove(local_dead_list.begin(), local_dead_list.end(),
 					dead_man), local_dead_list.end());
+	pthread_mutex_unlock(&this->process_mutex);
 	//TODO:
 	//send to others info about entombing
 	dead_man = -1;
+}
+
+bool Gravedigger::isDeadListEmpty() {
+	pthread_mutex_lock(&this->process_mutex);
+	bool ret = local_dead_list.size() > 0;
+	pthread_mutex_unlock(&this->process_mutex);
+	return ret;
+}
+
+int Gravedigger::getNextDeadMan() {
+	pthread_mutex_lock(&this->process_mutex);
+	int ret = VectorUtils::GetRandomElement(local_dead_list);
+	pthread_mutex_unlock(&this->process_mutex);
+	return ret;
 }
 
 void Gravedigger::Run() {
@@ -58,11 +74,11 @@ void Gravedigger::Run() {
 	srand(time(NULL) + id);
 
 	while (isworking) {
-		usleep(20);
-		if (local_dead_list.size() > 0) {
+		sleep(2);
+		if (isDeadListEmpty()) {
 			can_remove = false;
 			while (!can_remove) {
-				dead_man = VectorUtils::GetRandomElement(local_dead_list);
+				dead_man = getNextDeadMan();
 				request_status = WAIT;
 				deadManRequest(dead_man);
 				can_remove = waitForDeadRespond();
@@ -79,6 +95,7 @@ void Gravedigger::Run() {
 
 			officeQueue.push_back(std::make_pair(id, lamport_time));
 			std::sort(officeQueue.begin(), officeQueue.end(), sort_pred());
+
 		}
 	}
 }

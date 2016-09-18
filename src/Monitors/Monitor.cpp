@@ -9,19 +9,20 @@
 
 void* Monitor::Run() {
 	is_working = true;
-	while(is_working){
-		ListenAndHandleMassages();
+	while (is_working) {
+		if (actor->getIsworking()) {
+			ListenAndHandleMassages();
+		}
 	}
 	return 0;
 }
 
 void Monitor::Stop() {
-    is_working = false;
+	is_working = false;
 }
 
-Monitor::Monitor(Actor *actor)
-{
-    this->actor = actor;
+Monitor::Monitor(Actor *actor) {
+	this->actor = actor;
 }
 
 void Monitor::ListenAndHandleMassages() {
