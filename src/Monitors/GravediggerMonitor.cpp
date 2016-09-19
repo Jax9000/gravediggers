@@ -53,19 +53,28 @@ void GravediggerMonitor::ListenAndHandleMassages() {
 	case DEAD_MAN_ENTOMBED:
 		gravedigger->removeFromLocalDeadList(msg.iValue);
 		break;
-	case DEAD_MAN_RESPOND:
-		int respondingProcess = status.MPI_SOURCE - GRAVEDIGGER;
-		respondTab[respondingProcess]++;
-		if(respondTab[respondingProcess] == gravedigger->request_number
-				&& gravedigger->getRequestStatus() == WAIT) {
-			if(!msg.bValue){
-				gravedigger->setRequestStatus(REFUSE);
+	case DEAD_MAN_RESPOND:{
+			int respondingProcess = status.MPI_SOURCE - GRAVEDIGGER;
+			respondTab[respondingProcess]++;
+			if(respondTab[respondingProcess] == gravedigger->request_number
+					&& gravedigger->getRequestStatus() == WAIT) {
+				if(!msg.bValue){
+					gravedigger->setRequestStatus(REFUSE);
+				}
+				else if(checkIfAllProcessesRespond())
+				{
+					gravedigger->setRequestStatus(ACCEPT);
+				}
 			}
-			else if(checkIfAllProcessesRespond())
-			{
-				gravedigger->setRequestStatus(ACCEPT);
-			}
+			break;
 		}
+	case LOCK_OFFICIAL:
+		gravedigger->AddUniqueToQueueAndSort(status.MPI_SOURCE, msg.iValue);
+		MessageModel msg;
+		msg.iValue = gravedigger->getOfficialRequestTime();
+		gravedigger->SafeSend(msg, LOCK_OFFICIAL_RESPOND, status.MPI_SOURCE);
+		break;
+	case LOCK_OFFICIAL_RESPOND:
 		break;
 	}
 }

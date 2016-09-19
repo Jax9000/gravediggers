@@ -10,6 +10,9 @@
 struct sort_pred {
 	bool operator()(const std::pair<int, int> &left,
 			const std::pair<int, int> &right) {
+		if(left.second == right.second){
+			return left.first < right.first;
+		}
 		return left.second < right.second;
 	}
 };
@@ -20,6 +23,8 @@ Gravedigger::Gravedigger(int id) :
 	dead_man = -1;
 	request_number = 0;
 	local_mutex = PTHREAD_MUTEX_INITIALIZER;
+	queue_mutex = PTHREAD_MUTEX_INITIALIZER;
+	official_request_time = NOT_WAITING;
 }
 
 void Gravedigger::UpdateLocalList(const MessageModel& msg) {
@@ -104,8 +109,8 @@ void Gravedigger::Run() {
 
 			entomb();
 
-			officeQueue.push_back(std::make_pair(id, lamport_time));
-			std::sort(officeQueue.begin(), officeQueue.end(), sort_pred());
+			requestOfficial();
+			waitForMyTurnInQueue();
 
 		}
 	}
@@ -116,8 +121,7 @@ Gravedigger::~Gravedigger() {
 }
 
 bool Gravedigger::waitForDeadRespond() {
-	while (request_status == WAIT)
-		;
+	while (request_status == WAIT);
 	if (request_status == ACCEPT) {
 		return true;
 	}
@@ -142,4 +146,34 @@ bool Gravedigger::checkIfEntombed(int dead_id) {
 		}
 	}
 	return false;
+}
+
+void Gravedigger::AddUniqueToQueueAndSort(int process_id, int time) {
+	pthread_mutex_lock(&queue_mutex);
+	if(!VectorUtils::CheckIfVectorContainLeftValue(officeQueue, process_id)){
+		officeQueue.push_back(std::make_pair(process_id, time));
+		std::sort(officeQueue.begin(), officeQueue.end(), sort_pred());
+	}
+	pthread_mutex_unlock(&queue_mutex);
+}
+
+void Gravedigger::requestOfficial() {
+	recieved_all_official_response = false;
+	pthread_mutex_lock(&mpi_mutex);
+	int time = lamport_time;
+	pthread_mutex_unlock(&mpi_mutex);
+	AddUniqueToQueueAndSort(id, time);
+	MessageModel msg;
+	msg.iValue = time;
+	BroadcastOtherGravediggers(msg, LOCK_OFFICIAL);
+}
+
+void Gravedigger::waitForMyTurnInQueue() {
+	while(recieved_all_official_response == false);
+	bool isFirst = false;
+	while(!isFirst){
+		pthread_mutex_lock(&queue_mutex);
+		isFirst = (officeQueue[0].first == id);
+		pthread_mutex_unlock(&queue_mutex);
+	}
 }
