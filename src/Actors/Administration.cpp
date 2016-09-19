@@ -20,7 +20,7 @@ void Administration::Run() {
         for(int i=GRAVEDIGGER; i<MpiHelper::GetSize(); i++){
         	Send(msg, DEAD_MAN_LIST, i);
         }
-        sleep(rand()%MAX_SLEEP_TIME);
+        sleep(rand()%MAX_NEW_LIST_DELAY);
     }
 }
 

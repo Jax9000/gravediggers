@@ -16,8 +16,6 @@
 #include "../Defines.h"
 #include "../Utils/BaseCommunicationMPI.h"
 
-#define MAX_SLEEP_TIME 10
-
 class Administration : public BaseCommunicationMPI, public Actor{
 public:
 	Administration(int id);

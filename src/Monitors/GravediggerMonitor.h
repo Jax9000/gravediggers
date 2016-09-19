@@ -14,12 +14,16 @@
 class GravediggerMonitor : public Monitor{
 public:
     GravediggerMonitor(Gravedigger * digger);
+	bool checkIfCanBeEntomped(const int dead_id, const int time);
 
 protected:
-    Gravedigger* GetGravedigger();
     void ListenAndHandleMassages();
 
     int * respondTab;
+    Gravedigger* gravedigger;
+
+private:
+	bool checkIfAllProcessesRespond();
 };
 
 #endif /* GRAVEDIGGERMONITOR_H_ */

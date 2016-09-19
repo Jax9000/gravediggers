@@ -26,6 +26,7 @@ public:
 	void Run() override;
 	virtual ~Gravedigger();
 	void UpdateLocalList(const MessageModel& msg);
+	bool checkIfEntombed(int dead_id);
 
 	int getDeadMan() const {
 		return dead_man;
@@ -51,11 +52,10 @@ public:
 
 private:
 	vector<int> local_dead_list;
-	bool can_remove;
 	int dead_man;
 	int request_time;
 	RequestStatus request_status;
-    pthread_mutex_t process_mutex;
+    pthread_mutex_t local_mutex;
 
 	void deadManRequest(int dead_man);
 	bool waitForDeadRespond();
