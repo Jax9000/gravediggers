@@ -26,6 +26,10 @@ public:
 		return isworking;
 	}
 
+	int getId() const {
+		return id;
+	}
+
 protected:
 	ActorType actor_type;
 	int id;

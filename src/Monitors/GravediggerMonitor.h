@@ -14,7 +14,7 @@
 class GravediggerMonitor : public Monitor{
 public:
     GravediggerMonitor(Gravedigger * digger);
-	bool checkIfCanBeEntomped(const int dead_id, const int time);
+	bool checkIfCanBeEntomped(const int requesting_deadman_id, const int time, const int requesting_process_id);
 
 protected:
     void ListenAndHandleMassages();
@@ -24,6 +24,7 @@ protected:
 
 private:
 	bool checkIfAllProcessesRespond();
+	int officialRespondCounter;
 };
 
 #endif /* GRAVEDIGGERMONITOR_H_ */

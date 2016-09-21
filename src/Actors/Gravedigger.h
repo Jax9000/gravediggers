@@ -30,6 +30,8 @@ public:
 	void UpdateLocalList(const MessageModel& msg);
 	bool checkIfEntombed(int dead_id);
 	void AddUniqueToQueueAndSort(int process_id, int time);
+	void removeFromLocalDeadList(int);
+	void removeOfficial(int process_id);
 
 	int getDeadMan() const {
 		return dead_man;
@@ -47,7 +49,6 @@ public:
 		return request_status;
 	}
 
-	void removeFromLocalDeadList(int);
 
 	bool isRecievedAllOfficialResponse() const {
 		return recieved_all_official_response;
@@ -77,7 +78,6 @@ private:
 	RequestStatus request_status;
 	bool recieved_all_official_response;
     pthread_mutex_t local_mutex;
-    pthread_mutex_t queue_mutex;
 
 	void deadManRequest(int dead_man);
 	bool waitForDeadRespond();
@@ -87,6 +87,8 @@ private:
     void BroadcastOtherGravediggers(MessageModel &msg, MessageType type);
 	void requestOfficial();
 	void waitForMyTurnInQueue();
+	void signDocs();
+	void releaseOfficial();
 };
 
 #endif /* GRAVEDIGGER_H_ */

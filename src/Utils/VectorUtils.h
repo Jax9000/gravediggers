@@ -43,15 +43,15 @@ public:
 	}
 
 	template<typename T1, typename T2>
-	static bool CheckIfVectorContainLeftValue(vector<pair<T1, T2> > vec, T1 searchingValue) {
-		if (vec.size() == 0) {
-			return false;
-		}
-		typename vector<pair<T1, T2> >::iterator it = std::find_if(vec.begin(),
-				vec.end(), compare<T1, T2>(searchingValue));
+	static bool CheckIfVectorContainLeftValue(vector<pair<T1, T2> > vec,
+			T1 searchingValue) {
+		if (vec.size() > 0) {
+			typename vector<pair<T1, T2> >::iterator it = std::find_if(
+					vec.begin(), vec.end(), compare<T1, T2>(searchingValue));
 
-		if (it->first == searchingValue) {
-			return true;
+			if (it->first == searchingValue) {
+				return true;
+			}
 		}
 		return false;
 	}

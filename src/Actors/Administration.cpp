@@ -8,7 +8,6 @@
 #include "Administration.h"
 
 Administration::Administration(int id) : Actor::Actor(id) {
-	// TODO Auto-generated constructor stub
 	current_umarlak = 0;
 }
 
@@ -20,12 +19,14 @@ void Administration::Run() {
         for(int i=GRAVEDIGGER; i<MpiHelper::GetSize(); i++){
         	Send(msg, DEAD_MAN_LIST, i);
         }
+        stringstream ss;
+        ss << "New dead list appeared" << endl;
+        Log(ss);
         sleep(rand()%MAX_NEW_LIST_DELAY);
     }
 }
 
 Administration::~Administration() {
-    // TODO Auto-generated destructor stub
 }
 
 void Administration::fillWithUmarlaks(int *array, int size)

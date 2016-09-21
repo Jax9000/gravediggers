@@ -23,7 +23,6 @@ Gravedigger::Gravedigger(int id) :
 	dead_man = -1;
 	request_number = 0;
 	local_mutex = PTHREAD_MUTEX_INITIALIZER;
-	queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 	official_request_time = NOT_WAITING;
 }
 
@@ -59,6 +58,10 @@ void Gravedigger::entomb() {
 	ss << "Entombed [" << dead_man << "] by [" << id << "]\n";
 	Log(ss);
 
+	MessageModel msg;
+	msg.iValue = dead_man;
+	BroadcastOtherGravediggers(msg, DEAD_MAN_ENTOMBED);
+
 	entombed_list.push_back(dead_man);
 	usleep(rand() % 5000);
 	pthread_mutex_lock(&this->mpi_mutex);
@@ -69,11 +72,11 @@ void Gravedigger::entomb() {
 	removeFromLocalDeadList(dead_man);
 	pthread_mutex_unlock(&this->local_mutex);
 
-	MessageModel msg;
-	msg.iValue = dead_man;
-	BroadcastOtherGravediggers(msg, DEAD_MAN_ENTOMBED);
+//	MessageModel msg;
+//	msg.iValue = dead_man;
+//	BroadcastOtherGravediggers(msg, DEAD_MAN_ENTOMBED);
 
-	dead_man = -1;
+//	dead_man = -1;
 }
 
 bool Gravedigger::isDeadListEmpty() {
@@ -111,7 +114,10 @@ void Gravedigger::Run() {
 
 			requestOfficial();
 			waitForMyTurnInQueue();
+			signDocs();
+			releaseOfficial();
 
+			dead_man = -1;
 		}
 	}
 }
@@ -149,22 +155,22 @@ bool Gravedigger::checkIfEntombed(int dead_id) {
 }
 
 void Gravedigger::AddUniqueToQueueAndSort(int process_id, int time) {
-	pthread_mutex_lock(&queue_mutex);
+	pthread_mutex_lock(&local_mutex);
 	if(!VectorUtils::CheckIfVectorContainLeftValue(officeQueue, process_id)){
 		officeQueue.push_back(std::make_pair(process_id, time));
 		std::sort(officeQueue.begin(), officeQueue.end(), sort_pred());
 	}
-	pthread_mutex_unlock(&queue_mutex);
+	pthread_mutex_unlock(&local_mutex);
 }
 
 void Gravedigger::requestOfficial() {
 	recieved_all_official_response = false;
 	pthread_mutex_lock(&mpi_mutex);
-	int time = lamport_time;
+	official_request_time = lamport_time;
 	pthread_mutex_unlock(&mpi_mutex);
-	AddUniqueToQueueAndSort(id, time);
+	AddUniqueToQueueAndSort(id, official_request_time);
 	MessageModel msg;
-	msg.iValue = time;
+	msg.iValue = official_request_time;
 	BroadcastOtherGravediggers(msg, LOCK_OFFICIAL);
 }
 
@@ -172,8 +178,40 @@ void Gravedigger::waitForMyTurnInQueue() {
 	while(recieved_all_official_response == false);
 	bool isFirst = false;
 	while(!isFirst){
-		pthread_mutex_lock(&queue_mutex);
+		pthread_mutex_lock(&local_mutex);
 		isFirst = (officeQueue[0].first == id);
-		pthread_mutex_unlock(&queue_mutex);
+		pthread_mutex_unlock(&local_mutex);
 	}
+}
+
+void Gravedigger::signDocs() {
+	usleep(rand() % 5000);
+	pthread_mutex_lock(&this->mpi_mutex);
+	lamport_time++;
+	pthread_mutex_unlock(&this->mpi_mutex);
+	stringstream ss;
+	ss << "Docs signed for dead man[" << dead_man << "]" << endl;
+	Log(ss);
+}
+
+void Gravedigger::removeOfficial(int process_id) {
+	pthread_mutex_lock(&local_mutex);
+	if (officeQueue.size() > 0) {
+		for(vector< pair<int, int> >::iterator foo = officeQueue.begin(); foo != officeQueue.end(); ++foo){
+		    if( foo->first == process_id ){
+		        officeQueue.erase(foo);
+		        break;
+		    }
+		}
+	}
+	pthread_mutex_unlock(&local_mutex);
+}
+
+void Gravedigger::releaseOfficial() {
+	removeOfficial(id);
+	pthread_mutex_lock(&local_mutex);
+	official_request_time = NOT_WAITING;
+	pthread_mutex_unlock(&local_mutex);
+	MessageModel msg;
+	BroadcastOtherGravediggers(msg, UNLOCK_OFFICIAL);
 }

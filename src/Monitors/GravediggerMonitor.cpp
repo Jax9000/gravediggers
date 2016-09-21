@@ -13,20 +13,21 @@ GravediggerMonitor::GravediggerMonitor(Gravedigger *digger) :
 	respondTab = new int[MpiHelper::GetSize()];
 	for(int i=0; i<MpiHelper::GetSize(); i++)
 		respondTab[i] = 0;
+	officialRespondCounter = 0;
 }
 
-bool GravediggerMonitor::checkIfCanBeEntomped(const int dead_id, const int time) {
-	return !gravedigger->checkIfEntombed(dead_id)
-			&& (gravedigger->getDeadMan() != dead_id
-					|| time < gravedigger->lamport_time);
+bool GravediggerMonitor::checkIfCanBeEntomped(const int requesting_deadman_id, const int time, const int requesting_process_id) {
+	return !gravedigger->checkIfEntombed(requesting_deadman_id) &&
+			(gravedigger->getDeadMan() != requesting_deadman_id ||
+					(time < gravedigger->lamport_time || requesting_process_id < gravedigger->getId()));
 }
 
 bool GravediggerMonitor::checkIfAllProcessesRespond() {
 	int responded = 0;
-	for (int i = 0; i < MpiHelper::GetSize() - GRAVEDIGGER; i++)
+	for (int i = 0; i < MpiHelper::GetGravediggerCount(); i++)
 		if (respondTab[i] == gravedigger->request_number)
 			responded++;
-	return responded == MpiHelper::GetSize() - GRAVEDIGGER - 1;
+	return responded == MpiHelper::GetGravediggerCount() - 1;
 }
 
 void GravediggerMonitor::ListenAndHandleMassages() {
@@ -35,6 +36,7 @@ void GravediggerMonitor::ListenAndHandleMassages() {
 			&status);
 	std::stringstream ss;
 	ss.clear();
+	MessageModel msg_respond;
 	switch (status.MPI_TAG) {
 	case SPAM:
 		break;
@@ -42,12 +44,11 @@ void GravediggerMonitor::ListenAndHandleMassages() {
 		gravedigger->UpdateLocalList(msg);
 		break;
 	case DEAD_MAN_REQUEST:
-		MessageModel msg_respond;
 		msg_respond.iValue = msg.iValue;
-		msg_respond.bValue = checkIfCanBeEntomped(msg.iValue, msg.time);
-		ss << "My dead_man: " << gravedigger->getDeadMan() << ", requesting: " << msg.iValue << " time ["
-				<< gravedigger->lamport_time << ":" << msg.time <<  "] respond: " << msg_respond.bValue << endl;
-		gravedigger->Log(ss);
+		msg_respond.bValue = checkIfCanBeEntomped(msg.iValue, msg.time, status.MPI_SOURCE);
+//		ss << "My dead_man: " << gravedigger->getDeadMan() << ", requesting: " << msg.iValue << " time ["
+//				<< gravedigger->lamport_time << ":" << msg.time <<  "] respond: " << msg_respond.bValue << endl;
+//		gravedigger->Log(ss);
 		gravedigger->SafeSend(msg_respond, DEAD_MAN_RESPOND, status.MPI_SOURCE);
 		break;
 	case DEAD_MAN_ENTOMBED:
@@ -70,11 +71,23 @@ void GravediggerMonitor::ListenAndHandleMassages() {
 		}
 	case LOCK_OFFICIAL:
 		gravedigger->AddUniqueToQueueAndSort(status.MPI_SOURCE, msg.iValue);
-		MessageModel msg;
-		msg.iValue = gravedigger->getOfficialRequestTime();
-		gravedigger->SafeSend(msg, LOCK_OFFICIAL_RESPOND, status.MPI_SOURCE);
+		msg_respond.iValue = gravedigger->getOfficialRequestTime();
+		gravedigger->SafeSend(msg_respond, LOCK_OFFICIAL_RESPOND, status.MPI_SOURCE);
 		break;
 	case LOCK_OFFICIAL_RESPOND:
+		if(msg.iValue != NOT_WAITING){
+			gravedigger->AddUniqueToQueueAndSort(status.MPI_SOURCE, msg.iValue);
+		}
+
+		officialRespondCounter++;
+		if(officialRespondCounter >= MpiHelper::GetGravediggerCount() - 1){
+			gravedigger->setRecievedAllOfficialResponse(true);
+			officialRespondCounter = 0;
+		}
+		break;
+	case UNLOCK_OFFICIAL:
+		gravedigger->removeOfficial(status.MPI_SOURCE);
 		break;
 	}
+
 }
