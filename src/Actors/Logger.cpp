@@ -13,6 +13,6 @@ void Logger::Run() {
 		char msg[MAX_LOG_LENGTH];
 		MPI_Status status;
 		MPI_Recv(&msg, MAX_LOG_LENGTH, MPI_CHAR, MPI_ANY_SOURCE, LOG, MPI_COMM_WORLD, &status);
-		cout << "[" << status.MPI_SOURCE << "]: " << msg;
+		cout << "[" <<  std::setfill('0') << std::setw(3) << status.MPI_SOURCE << "] : " << msg;
 	}
 }

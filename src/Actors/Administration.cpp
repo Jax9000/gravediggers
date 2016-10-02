@@ -20,7 +20,7 @@ void Administration::Run() {
         	Send(msg, DEAD_MAN_LIST, i);
         }
         stringstream ss;
-        ss << "New dead list appeared" << endl;
+        ss << "[" <<  setfill('0') << setw(6) << lamport_time << "] New dead list appeared" << endl;
         Log(ss);
         sleep(rand()%MAX_NEW_LIST_DELAY);
     }

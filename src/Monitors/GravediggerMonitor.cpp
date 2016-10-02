@@ -90,7 +90,7 @@ void GravediggerMonitor::ListenAndHandleMassages() {
 		}
 		break;
 	case UNLOCK_OFFICIAL:
-		gravedigger->removeOfficial(status.MPI_SOURCE);
+		gravedigger->removeFromQueue(status.MPI_SOURCE);
 		break;
 	}
 

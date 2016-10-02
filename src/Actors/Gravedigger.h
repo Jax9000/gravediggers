@@ -13,6 +13,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <algorithm>
+#include <iomanip>
 
 #include "Actor.h"
 
@@ -31,7 +32,7 @@ public:
 	bool checkIfEntombed(int dead_id);
 	void AddUniqueToQueueAndSort(int process_id, int time);
 	void removeFromLocalDeadList(int);
-	void removeOfficial(int process_id);
+	void removeFromQueue(int process_id);
 
 	int getDeadMan() const {
 		return dead_man;

@@ -56,7 +56,8 @@ void Gravedigger::removeFromLocalDeadList(int dead_id) {
 
 void Gravedigger::entomb() {
 	std::stringstream ss;
-	ss << "Entombed [" << dead_man << "] by [" << id << "]\n";
+	ss <<  "[" <<  setfill('0') << setw(6) << lamport_time
+			<< "] Entombed [" << dead_man << "] by [" << id << "]\n";
 	Log(ss);
 
 	MessageModel msg;
@@ -72,12 +73,6 @@ void Gravedigger::entomb() {
 	pthread_mutex_lock(&this->local_mutex);
 	removeFromLocalDeadList(dead_man);
 	pthread_mutex_unlock(&this->local_mutex);
-
-//	MessageModel msg;
-//	msg.iValue = dead_man;
-//	BroadcastOtherGravediggers(msg, DEAD_MAN_ENTOMBED);
-
-//	dead_man = -1;
 }
 
 bool Gravedigger::isDeadListEmpty() {
@@ -99,7 +94,6 @@ void Gravedigger::Run() {
 	srand(time(NULL) + id);
 
 	while (isworking) {
-		sleep(2);
 		if (!isDeadListEmpty()) {
 			bool can_entomb = false;
 			while (!can_entomb) {
@@ -184,6 +178,9 @@ void Gravedigger::waitForMyTurnInQueue() {
 		isFirst = (officeQueue[0].first == id);
 		pthread_mutex_unlock(&local_mutex);
 	}
+	stringstream ss;
+	ss <<  "[" <<  setfill('0') << setw(6) << lamport_time << "] Enters official critical section\n";
+	Log(ss);
 }
 
 void Gravedigger::signDocs() {
@@ -192,11 +189,11 @@ void Gravedigger::signDocs() {
 	lamport_time++;
 	pthread_mutex_unlock(&this->mpi_mutex);
 	stringstream ss;
-	ss << "Docs signed for dead man[" << dead_man << "]" << endl;
+	ss <<  "[" <<  setfill('0') << setw(6) << lamport_time << "] Docs signed for dead man[" << dead_man << "]" << endl;
 	Log(ss);
 }
 
-void Gravedigger::removeOfficial(int process_id) {
+void Gravedigger::removeFromQueue(int process_id) {
 	pthread_mutex_lock(&local_mutex);
 	if (officeQueue.size() > 0) {
 		for(vector< pair<int, int> >::iterator foo = officeQueue.begin(); foo != officeQueue.end(); ++foo){
@@ -210,7 +207,7 @@ void Gravedigger::removeOfficial(int process_id) {
 }
 
 void Gravedigger::releaseOfficial() {
-	removeOfficial(id);
+	removeFromQueue(id);
 	pthread_mutex_lock(&local_mutex);
 	official_request_time = NOT_WAITING;
 	pthread_mutex_unlock(&local_mutex);
