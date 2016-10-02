@@ -8,7 +8,7 @@
 #ifndef DEFINES_H_
 #define DEFINES_H_
 
-#define DEAD_LIST_SIZE 2
+#define DEAD_LIST_SIZE 1
 #define MAX_LOG_LENGTH 128
 
 #define BROADCAST_DELAY 20

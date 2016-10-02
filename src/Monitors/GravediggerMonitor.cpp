@@ -17,9 +17,13 @@ GravediggerMonitor::GravediggerMonitor(Gravedigger *digger) :
 }
 
 bool GravediggerMonitor::checkIfCanBeEntomped(const int requesting_deadman_id, const int time, const int requesting_process_id) {
-	return !gravedigger->checkIfEntombed(requesting_deadman_id) &&
-			(gravedigger->getDeadMan() != requesting_deadman_id ||
-					(time < gravedigger->lamport_time || requesting_process_id < gravedigger->getId()));
+	bool isEntombed = gravedigger->checkIfEntombed(requesting_deadman_id);
+	bool notMyDeadMan = gravedigger->getDeadMan() != requesting_deadman_id;
+	bool heRequestedFirst = time < gravedigger->deadman_request_time;
+	bool requestedInTheSameTime = time == gravedigger->deadman_request_time;
+	bool hasSmallerId = requesting_process_id < gravedigger->getId();
+	return !isEntombed &&
+			(notMyDeadMan || heRequestedFirst || (requestedInTheSameTime && hasSmallerId));
 }
 
 bool GravediggerMonitor::checkIfAllProcessesRespond() {
@@ -45,7 +49,7 @@ void GravediggerMonitor::ListenAndHandleMassages() {
 		break;
 	case DEAD_MAN_REQUEST:
 		msg_respond.iValue = msg.iValue;
-		msg_respond.bValue = checkIfCanBeEntomped(msg.iValue, msg.time, status.MPI_SOURCE);
+		msg_respond.bValue = checkIfCanBeEntomped(msg.iValue, msg.request_time, status.MPI_SOURCE);
 //		ss << "My dead_man: " << gravedigger->getDeadMan() << ", requesting: " << msg.iValue << " time ["
 //				<< gravedigger->lamport_time << ":" << msg.time <<  "] respond: " << msg_respond.bValue << endl;
 //		gravedigger->Log(ss);

@@ -21,6 +21,7 @@ struct MessageModel {
     int iValue;
     int umarlaks[20];
     bool bValue;
+    int request_time;
 };
 
 #endif /* MESSAGEMODEL_H_ */

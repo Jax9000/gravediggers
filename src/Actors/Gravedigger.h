@@ -70,16 +70,16 @@ public:
 	std::vector<pair<int, int> > officeQueue;
 	int official_request_time;
 	vector<int> entombed_list;
+	int deadman_request_time;
 
 private:
 	vector<int> local_dead_list;
 	int dead_man;
-	int request_time;
 	RequestStatus request_status;
 	bool recieved_all_official_response;
     pthread_mutex_t local_mutex;
 
-	void deadManRequest(int dead_man);
+	void deadManRequest(int dead_man, int request_time);
 	bool waitForDeadRespond();
 	void entomb();
 	bool isDeadListEmpty();

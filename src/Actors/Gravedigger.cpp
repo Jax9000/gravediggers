@@ -34,12 +34,13 @@ void Gravedigger::UpdateLocalList(const MessageModel& msg) {
 	pthread_mutex_unlock(&this->local_mutex);
 }
 
-void Gravedigger::deadManRequest(int dead_man) {
+void Gravedigger::deadManRequest(int dead_man, int request_time) {
 	request_number++;
 	for (int i = GRAVEDIGGER; i < MpiHelper::GetSize(); i++) {
 		if (i != MpiHelper::ProcesID()) {
 			MessageModel msg;
 			msg.iValue = dead_man;
+			msg.request_time = request_time;
 			SafeSend(msg, DEAD_MAN_REQUEST, i);
 		}
 	}
@@ -103,9 +104,10 @@ void Gravedigger::Run() {
 			bool can_entomb = false;
 			while (!can_entomb) {
 				dead_man = getNextDeadMan();
+				deadman_request_time = lamport_time;
 				if(dead_man >= 0){
 					request_status = WAIT;
-					deadManRequest(dead_man);
+					deadManRequest(dead_man, deadman_request_time);
 					can_entomb = waitForDeadRespond();
 				}
 			}
