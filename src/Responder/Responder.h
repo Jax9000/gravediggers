@@ -5,19 +5,19 @@
  *      Author: jjax
  */
 
-#ifndef MONITOR_H_
-#define MONITOR_H_
+#ifndef RESPONDER_H_
+#define RESPONDER_H_
 
 #include "../Actors/Actor.h"
 
 #include "../Utils/BaseMutexMPI.h"
 
-class Monitor {
+class Responder {
 public:
 	void* Run();
 	void Stop();
-    Monitor(Actor* actor);
-	virtual ~Monitor();
+    Responder(Actor* actor);
+	virtual ~Responder();
 
 protected:
 	virtual void ListenAndHandleMassages();
@@ -26,4 +26,4 @@ protected:
     bool is_working;
 };
 
-#endif /* MONITOR_H_ */
+#endif /* RESPONDER_H_ */

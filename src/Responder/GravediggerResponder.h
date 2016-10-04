@@ -5,15 +5,15 @@
  *      Author: jjax
  */
 
-#ifndef GRAVEDIGGERMONITOR_H_
-#define GRAVEDIGGERMONITOR_H_
+#ifndef GRAVEDIGGERRESPONDER_H_
+#define GRAVEDIGGERRESPONDER_H_
 
-#include "Monitor.h"
 #include "../Actors/Gravedigger.h"
+#include "../Responder/Responder.h"
 
-class GravediggerMonitor : public Monitor{
+class GravediggerResponder : public Responder{
 public:
-    GravediggerMonitor(Gravedigger * digger);
+    GravediggerResponder(Gravedigger * digger);
 	bool checkIfCanBeEntomped(const int requesting_deadman_id, const int time, const int requesting_process_id);
 
 protected:
@@ -27,4 +27,4 @@ private:
 	int officialRespondCounter;
 };
 
-#endif /* GRAVEDIGGERMONITOR_H_ */
+#endif /* GRAVEDIGGERRESPONDER_H_ */

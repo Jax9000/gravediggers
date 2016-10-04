@@ -12,12 +12,6 @@ void BaseCommunicationMPI::Send(MessageModel &message, MessageType type,
 	message.time = lamport_time;
 	MPI_Send(&message, sizeof(MessageModel), MPI_BYTE, receiver, (int) type,
 	MPI_COMM_WORLD);
-//	if (MpiHelper::ProcesID() > GRAVEDIGGER && receiver > GRAVEDIGGER) {
-//		std::stringstream ss;
-//		ss << "Sended from " << MpiHelper::ProcesID() << " to " << receiver
-//				<< " type: " << type << " time: " << lamport_time << endl;
-////		Log(ss);
-//	}
 }
 
 MessageModel BaseCommunicationMPI::Receive(int source, int type,
@@ -25,16 +19,6 @@ MessageModel BaseCommunicationMPI::Receive(int source, int type,
 	MessageModel msg;
 	MPI_Recv(&msg, sizeof(MessageModel), MPI_BYTE, source, type, MPI_COMM_WORLD,
 			status);
-//	if (MpiHelper::ProcesID() > GRAVEDIGGER && status->MPI_SOURCE > GRAVEDIGGER) {
-////		cout << "Dupa\n";
-//		std::stringstream ss;
-////		ss << "Recieved from " << status->MPI_SOURCE << " to "
-////				<< MpiHelper::ProcesID() << " type: " << status->MPI_TAG
-////				<< " time: " << lamport_time << endl;
-//
-//		ss << "test log";
-//		Log(ss);
-//	}
 	if (status->MPI_TAG != SPAM) {
 		lamport_time = std::max(msg.time, lamport_time);
 	}

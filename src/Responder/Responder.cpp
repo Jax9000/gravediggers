@@ -5,9 +5,9 @@
  *      Author: jjax
  */
 
-#include "Monitor.h"
+#include "../Responder/Responder.h"
 
-void* Monitor::Run() {
+void* Responder::Run() {
 	is_working = true;
 	while (is_working) {
 		if (actor->getIsworking()) {
@@ -17,16 +17,16 @@ void* Monitor::Run() {
 	return 0;
 }
 
-void Monitor::Stop() {
+void Responder::Stop() {
 	is_working = false;
 }
 
-Monitor::Monitor(Actor *actor) {
+Responder::Responder(Actor *actor) {
 	this->actor = actor;
 }
 
-void Monitor::ListenAndHandleMassages() {
+void Responder::ListenAndHandleMassages() {
 }
 
-Monitor::~Monitor() {
+Responder::~Responder() {
 }

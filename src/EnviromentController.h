@@ -10,13 +10,13 @@
 
 #include <mpi.h>
 #include <typeinfo>
-#include "Monitors/GravediggerMonitor.h"
 #include "Actors/Administration.h"
 #include "Actors/Gravedigger.h"
 #include "Actors/Broadcaster.h"
 #include "Enums/ActorType.h"
-#include "Monitors/Monitor.h"
 #include "Actors/Logger.h"
+#include "Responder/GravediggerResponder.h"
+#include "Responder/Responder.h"
 
 
 class EnviromentController {

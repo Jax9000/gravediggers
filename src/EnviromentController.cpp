@@ -47,7 +47,7 @@ Administration* EnviromentController::RunAdministration(int id) {
 
 Gravedigger* EnviromentController::RunGravedigger(int id) {
 	Gravedigger* instance = new Gravedigger(id);
-    GravediggerMonitor * monitor = new GravediggerMonitor(instance);
+    GravediggerResponder * monitor = new GravediggerResponder(instance);
     pthread_t thread;
     pthread_create(&thread, NULL, &EnviromentController::thread_provider, monitor);
     return instance;
@@ -59,5 +59,5 @@ Broadcaster* EnviromentController::RunBroadcaster(int id) {
 }
 
 void* EnviromentController::thread_provider(void* object) {
-	return ((Monitor*)object)->Run();
+	return ((Responder*)object)->Run();
 }

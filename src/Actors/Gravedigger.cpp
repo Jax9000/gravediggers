@@ -6,6 +6,7 @@
  */
 
 #include "Gravedigger.h"
+#include <unistd.h>
 
 struct sort_pred {
 	bool operator()(const std::pair<int, int> &left,
@@ -48,9 +49,12 @@ void Gravedigger::deadManRequest(int dead_man, int request_time) {
 
 void Gravedigger::removeFromLocalDeadList(int dead_id) {
 	if (local_dead_list.size() > 0) {
-		local_dead_list.erase(
-				std::remove(local_dead_list.begin(), local_dead_list.end(),
-						dead_id), local_dead_list.end());
+		for(vector<int>::iterator foo = local_dead_list.begin(); foo != local_dead_list.end(); ++foo){
+			if(*foo == dead_id){
+				local_dead_list.erase(foo);
+				break;
+			}
+		}
 	}
 }
 
@@ -65,7 +69,7 @@ void Gravedigger::entomb() {
 	BroadcastOtherGravediggers(msg, DEAD_MAN_ENTOMBED);
 
 	entombed_list.push_back(dead_man);
-	usleep(rand() % 5000);
+	usleep(rand() % ENTOMB_MAX_UTIME);
 	pthread_mutex_lock(&this->mpi_mutex);
 	lamport_time++;
 	pthread_mutex_unlock(&this->mpi_mutex);
@@ -112,7 +116,6 @@ void Gravedigger::Run() {
 			waitForMyTurnInQueue();
 			signDocs();
 			releaseOfficial();
-
 			dead_man = -1;
 		}
 	}
@@ -154,8 +157,14 @@ void Gravedigger::AddUniqueToQueueAndSort(int process_id, int time) {
 	pthread_mutex_lock(&local_mutex);
 	if(!VectorUtils::CheckIfVectorContainLeftValue(officeQueue, process_id)){
 		officeQueue.push_back(std::make_pair(process_id, time));
-		std::sort(officeQueue.begin(), officeQueue.end(), sort_pred());
+	} else {
+		for(int i=0; i<officeQueue.size(); i++){
+			if(officeQueue[i].first == process_id) {
+				officeQueue[i].second = time;
+			}
+		}
 	}
+	std::sort(officeQueue.begin(), officeQueue.end(), sort_pred());
 	pthread_mutex_unlock(&local_mutex);
 }
 
@@ -173,6 +182,7 @@ void Gravedigger::requestOfficial() {
 void Gravedigger::waitForMyTurnInQueue() {
 	while(recieved_all_official_response == false);
 	bool isFirst = false;
+	int counter = 0;
 	while(!isFirst){
 		pthread_mutex_lock(&local_mutex);
 		isFirst = (officeQueue[0].first == id);
@@ -184,7 +194,7 @@ void Gravedigger::waitForMyTurnInQueue() {
 }
 
 void Gravedigger::signDocs() {
-	usleep(rand() % 5000);
+	usleep(rand() % SIGN_DOCS_MAX_UTIME);
 	pthread_mutex_lock(&this->mpi_mutex);
 	lamport_time++;
 	pthread_mutex_unlock(&this->mpi_mutex);
@@ -203,6 +213,7 @@ void Gravedigger::removeFromQueue(int process_id) {
 		    }
 		}
 	}
+
 	pthread_mutex_unlock(&local_mutex);
 }
 
