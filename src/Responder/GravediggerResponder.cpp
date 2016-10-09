@@ -71,7 +71,6 @@ void GravediggerResponder::ListenAndHandleMassages() {
 			break;
 		}
 	case LOCK_OFFICIAL:
-
 		gravedigger->AddUniqueToQueueAndSort(status.MPI_SOURCE, msg.iValue);
 		msg_respond.iValue = gravedigger->getOfficialRequestTime();
 		gravedigger->SafeSend(msg_respond, LOCK_OFFICIAL_RESPOND, status.MPI_SOURCE);

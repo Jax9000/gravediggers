@@ -155,11 +155,20 @@ bool Gravedigger::checkIfEntombed(int dead_id) {
 
 void Gravedigger::AddUniqueToQueueAndSort(int process_id, int time) {
 	pthread_mutex_lock(&local_mutex);
-	if(!VectorUtils::CheckIfVectorContainLeftValue(officeQueue, process_id)){
+
+	int count = 0;
+	int queueSize = officeQueue.size();
+	if(queueSize > 0)
+		for(int i = 0; i < queueSize; i++) {
+			if(officeQueue[i].first == process_id)
+				count++;
+		}
+	//if(!VectorUtils::CheckIfVectorContainLeftValue(officeQueue, process_id)){
+	if(count == 0) {
 		officeQueue.push_back(std::make_pair(process_id, time));
 	} else {
-		for(int i=0; i<officeQueue.size(); i++){
-			if(officeQueue[i].first == process_id) {
+		for(int i=0; i<queueSize; i++){
+			if(officeQueue[i].first == process_id && officeQueue[i].second < time) {
 				officeQueue[i].second = time;
 			}
 		}
@@ -213,7 +222,6 @@ void Gravedigger::removeFromQueue(int process_id) {
 		    }
 		}
 	}
-
 	pthread_mutex_unlock(&local_mutex);
 }
 
